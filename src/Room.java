@@ -69,15 +69,19 @@ public class Room
         return returnString;
     }
 
-    public void putItem(String name, String description, int weight){
-         roomItem = new Item(name, description, weight);
+    public void putItem(String name, int weight){
+         roomItem = new Item(name, weight);
 
 
     }
 
     public String showItem(){
-        String returnString = roomItem.toString();
+        String returnString = roomItem.getItemName();
         return returnString;
+    }
+
+    public Item getRoomItem(){
+        return roomItem;
     }
 
     /**

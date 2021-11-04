@@ -18,8 +18,7 @@
 public class Game 
 {
     private Parser parser;
-    private Player player = new Player();
-    private Room currentRoom = player.getCurrentRoom();
+    private Player player;
     private Room entrance, kitchen, storage, hallway, office, crawlspace, hallway2, hallway3, hallway4, bedroom;
         
     /**
@@ -86,7 +85,8 @@ public class Game
     }
 
     private void insertItems(){
-        kitchen.putItem("knife", "a adull knife", 1);
+        kitchen.putItem("knife", 1);
+        bedroom.putItem("bottle", 1 );
     }
 
     /**
@@ -144,8 +144,14 @@ public class Game
         else if (commandWord.equals("quit")) {
             wantToQuit = quit(command);
         }
+        else if (commandWord.equals("inventory")){
+            showInventory();
+        }
         else if (commandWord.equals("look")) {
             look();
+        }
+        else if (commandWord.equals("yes")) {
+            pickUpItem();
         }
 
         return wantToQuit;
@@ -166,7 +172,7 @@ public class Game
         System.out.println("Your command words are:");
         System.out.println(parser.getAllCommands());
         System.out.println("Your directions are:");
-        System.out.println(currentRoom.getExitString());
+        System.out.println(player.getCurrentRoom().getExitString());
     }
 
     /** 
@@ -184,13 +190,13 @@ public class Game
         String direction = command.getSecondWord();
 
         // Try to leave current room.
-        Room nextRoom = currentRoom.getExits(direction);
+        Room nextRoom = player.getCurrentRoom().getExits(direction);
 
         if (nextRoom == null)
             System.out.println("There is no door!");
         else {
             player.setCurrentRoom(nextRoom);
-            System.out.println(currentRoom.getLongDescription());
+            System.out.println(player.getCurrentRoom().getLongDescription());
         }
 
         }
@@ -213,8 +219,8 @@ public class Game
     }
 
     private void printLocation() {
-        System.out.println("You are " + currentRoom.getDescription());
-        System.out.println(currentRoom.getExitString());
+        System.out.println("You are " + player.getCurrentRoom().getDescription());
+        System.out.println(player.getCurrentRoom().getExitString());
 
         System.out.println();
     }
@@ -223,8 +229,19 @@ public class Game
      *  and available direction in the room.
      */
     private void look(){
-        System.out.println(currentRoom.getLongDescription());
-        System.out.println("You found:" + currentRoom.showItem());
+        System.out.println(player.getCurrentRoom().getLongDescription());
+        System.out.println("You found: a " + player.getCurrentRoom().showItem());
+        System.out.println("Would you like to pick it up?");
+
+    }
+
+    private void pickUpItem(){
+        Item item = player.getCurrentRoom().getRoomItem();
+        player.addItem(item);
+    }
+
+    private void showInventory(){
+        System.out.println(player.getInventory());
     }
 
 }
