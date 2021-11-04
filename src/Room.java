@@ -84,6 +84,10 @@ public class Room
         return roomItem;
     }
 
+    public void itemTaken(){
+        roomItem = null;
+    }
+
     /**
      * Return a long description of this room, of the form:
      * You are in the kitchen.

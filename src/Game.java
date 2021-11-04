@@ -153,6 +153,9 @@ public class Game
         else if (commandWord.equals("yes")) {
             pickUpItem();
         }
+        else if (commandWord.equals("no")){
+
+        }
 
         return wantToQuit;
     }
@@ -230,14 +233,24 @@ public class Game
      */
     private void look(){
         System.out.println(player.getCurrentRoom().getLongDescription());
-        System.out.println("You found: a " + player.getCurrentRoom().showItem());
-        System.out.println("Would you like to pick it up?");
+       if ((player.getCurrentRoom().getRoomItem() != null && declineItem()) == true) {
+           System.out.println("You found: a " + player.getCurrentRoom().showItem());
+           System.out.println("Would you like to pick it up?");
+       }
 
     }
 
+    private boolean declineItem(){
+        return true;
+    }
+
+
+
     private void pickUpItem(){
+        System.out.println("Added a " + player.getCurrentRoom().showItem() + " to inventory.");
         Item item = player.getCurrentRoom().getRoomItem();
         player.addItem(item);
+        player.getCurrentRoom().itemTaken();
     }
 
     private void showInventory(){

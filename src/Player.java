@@ -17,7 +17,7 @@ public class Player {
         String inventoryString = "Inventory:  " + inventory;
 
         for (Item item : inventory) {
-            inventoryString += item;
+            inventoryString += item.getItemName();
         }
 
 
