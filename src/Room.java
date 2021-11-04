@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
+
 /**
  * Class Room - a room in an adventure game.
  *
@@ -12,13 +16,11 @@
  * @author  Michael Kölling and David J. Barnes
  * @version 2011.07.31
  */
-public class Room 
+public class Room
 {
-    public String description;
-    public Room northExit;
-    public Room southExit;
-    public Room eastExit;
-    public Room westExit;
+    private String description;
+    private HashMap<String, Room> exits;
+    private Item roomItem;
 
     /**
      * Create a room described "description". Initially, it has
@@ -29,26 +31,25 @@ public class Room
     public Room(String description) 
     {
         this.description = description;
+        exits = new HashMap<String, Room>();
     }
 
     /**
      * Define the exits of this room.  Every direction either leads
      * to another room or is null (no exit there).
-     * @param north The north exit.
-     * @param east The east east.
-     * @param south The south exit.
-     * @param west The west exit.
+     * @param direction The direction to which the next room exists.
+     * @param neighbour The actual neighbouring room.
+
      */
-    public void setExits(Room north, Room east, Room south, Room west) 
+    public void setExits(String direction, Room neighbour)
     {
-        if(north != null)
-            northExit = north;
-        if(east != null)
-            eastExit = east;
-        if(south != null)
-            southExit = south;
-        if(west != null)
-            westExit = west;
+        exits.put(direction, neighbour);
+    }
+
+
+    public Room getExits(String direction){
+
+        return exits.get(direction);
     }
 
     /**
@@ -59,4 +60,34 @@ public class Room
         return description;
     }
 
+    public String getExitString(){
+        String returnString = "Exits: ";
+        Set<String> keys = exits.keySet();
+        for (String exits: keys) {
+            returnString += "  " + exits;
+        }
+        return returnString;
+    }
+
+    public void putItem(String name, String description, int weight){
+         roomItem = new Item(name, description, weight);
+
+
+    }
+
+    public String showItem(){
+        String returnString = roomItem.toString();
+        return returnString;
+    }
+
+    /**
+     * Return a long description of this room, of the form:
+     * You are in the kitchen.
+     * Exits: north west
+     * @return A description of the room, including exits.
+     */
+    public String getLongDescription()
+    {
+        return "You are " + description + ".\n" + getExitString();
+    }
 }
